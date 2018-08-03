@@ -53,9 +53,6 @@ bot.on('message', async (msg) => {
         const name = "wand of the bulwark";
         const urlName = name.split(" ").join("-");
 
-        const util = require('util');
-        const fs = require('fs');
-
         const HTMLParser = require('fast-html-parser');
 
         nightmare
