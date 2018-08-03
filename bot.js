@@ -111,7 +111,6 @@ bot.on('message', async (msg) => {
                 const dropsFrom = HTMLParser.parse(result.drops[1]).childNodes[2].childNodes;
                 for (let i = 0; i < dropsFrom.length; i += 3) {
                     dropArray.push(dropsFrom[i].childNodes[0].rawText)
-                    fs.writeFileSync(`test${i}.txt`, util.inspect(dropsFrom[i].childNodes[0], { showHidden: true, depth: null }));
                 }
                 let msgg = "";
                 msgg += bagtype + "\n";
