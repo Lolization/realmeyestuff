@@ -49,6 +49,7 @@ bot.on('message', async (msg) => {
         msg.channel.send(`<:${emoji.name}:${emoji.id}>`);
     }
     if (msg.content === 'I am loloollooo') {
+        msg.channel.send(`Running...`);
         const name = "wand of the bulwark";
         const urlName = name.split(" ").join("-");
 
@@ -112,13 +113,18 @@ bot.on('message', async (msg) => {
                     dropArray.push(dropsFrom[i].childNodes[0].rawText)
                     fs.writeFileSync(`test${i}.txt`, util.inspect(dropsFrom[i].childNodes[0], { showHidden: true, depth: null }));
                 }
+                let msgg = "";
+                msgg += bagtype + "\n";
                 console.log(bagtype)
+                msgg += dropArray + "\n";
                 console.log(dropArray)
 
                 const name = result.name;
                 const description = result.description;
 
                 console.log(name);
+                msgg += name + "\n";
+                msgg += description + "\n";
                 console.log(description);
 
                 let Soulbound = false;
@@ -128,6 +134,7 @@ bot.on('message', async (msg) => {
                     const title = rowInfo.childNodes[0].childNodes[0].rawText;
                     if (title === 'Soulbound') {
                         console.log(title);
+                        msgg += title + "\n";
                         Soulbound = true;
                     } else {
                         const basevalue = rowInfo.childNodes[2];
@@ -143,6 +150,7 @@ bot.on('message', async (msg) => {
                                 value = basevalue.childNodes[1].rawText.slice(1, basevalue.childNodes[1].rawText.length)
                             }
                         }
+                        msgg += `${title}:${value}\n`;
                         console.log(`${title}:${value}`);
                     }
                 }
@@ -155,9 +163,11 @@ bot.on('message', async (msg) => {
                 if (reskins) {
                     console.log(`Item Reskins:`);
                     reskins.forEach((reskin) => {
+                        msgg += `${reskin}\n`;
                         console.log(reskin);
                     })
                 }
+                msg.channel.send(msgg)
             })
             .catch(function (e) {
                 console.log(e);
