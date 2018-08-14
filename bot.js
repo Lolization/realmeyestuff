@@ -14,7 +14,8 @@ const Nightmare = require('nightmare');
 const nightmare = Nightmare({
     webPreferences: {
         images: false
-    }
+    },
+    show: false
 });
 
 let currentEmoji = 1700;
