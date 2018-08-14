@@ -11,7 +11,11 @@ function getID(string) {
 }
 
 const Nightmare = require('nightmare');
-const nightmare = Nightmare();
+const nightmare = Nightmare({
+    webPreferences: {
+        images: false
+    }
+});
 
 let currentEmoji = 1700;
 
