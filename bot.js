@@ -12,15 +12,14 @@ function getID(string) {
 
 const Nightmare = require('nightmare');
 const nightmare = Nightmare({
+    show: false,
+    frame: false,
     webPreferences: {
         images: false,
         javascript: false,
-        disableBlinkFeatures: "CSS3Text","CSSAdditiveAnimations","CSSOMSmoothScroll","CSSOffsetPositionAnchor","CSSBackdropFilter","CSSEnvironmentVariables","CSSFocusVisible","CSSFontSizeAdjust","CSSFragmentIdentifiers","CSSHexAlphaColor","CSSInBodyDoesNotBlockPaint","CSSIndependentTransformProperties","CSSLayoutAPI","CSSLogical","CSSMaskSourceType","CSSMatches","CSSOffsetPathRay","CSSOffsetPathRayContain"
-    },
-    show: false,
-    frame: false
+        disableBlinkFeatures: "CSS3Text,CSSAdditiveAnimations,CSSOMSmoothScroll,CSSOffsetPositionAnchor,CSSBackdropFilter,CSSEnvironmentVariables,CSSFocusVisible,CSSFontSizeAdjust,CSSFragmentIdentifiers,CSSHexAlphaColor,CSSInBodyDoesNotBlockPaint,CSSIndependentTransformProperties,CSSLayoutAPI,CSSLogical,CSSMaskSourceType,CSSMatches,CSSOffsetPathRay,CSSOffsetPathRayContain"
+    }
 });
-
 let currentEmoji = 1700;
 
 console.log(allItems.length);
