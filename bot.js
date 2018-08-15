@@ -13,7 +13,7 @@ const nightmare = Nightmare({
     frame: false,
     webPreferences: {
         images: false,
-        javascript: false,
+        javascript: true,
         disableBlinkFeatures: "CSS3Text,CSSAdditiveAnimations,CSSOMSmoothScroll,CSSOffsetPositionAnchor,CSSBackdropFilter,CSSEnvironmentVariables,CSSFocusVisible,CSSFontSizeAdjust,CSSFragmentIdentifiers,CSSHexAlphaColor,CSSInBodyDoesNotBlockPaint,CSSIndependentTransformProperties,CSSLayoutAPI,CSSLogical,CSSMaskSourceType,CSSMatches,CSSOffsetPathRay,CSSOffsetPathRayContain"
     }
 });
@@ -56,7 +56,8 @@ bot.on('message', async (msg) => {
             .catch(console.error);
         msg.channel.send('done');
     }
-    if (msg.content === 'I am loloollooo') {
+    if (msg.content === 'as') {
+        msg.channel.send('Running');
         const name = "conducting wand";
         const urlName = name.split(" ").join("-");
 
