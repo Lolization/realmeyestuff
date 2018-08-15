@@ -1,14 +1,11 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+const fetch = require('node-fetch');
 
-const names = require('./idtoname');
+const HTMLParser = require('fast-html-parser');
 
-const allItems = JSON.stringify(names).slice(1, -1).split(",");
-
-function getID(string) {
-    string = string.split(`"`).slice(1, 2).join("");
-    return string;
-}
+const fs = require('fs');
+const util = require('util');
 
 const Nightmare = require('nightmare');
 const nightmare = Nightmare({
@@ -20,31 +17,6 @@ const nightmare = Nightmare({
         disableBlinkFeatures: "CSS3Text,CSSAdditiveAnimations,CSSOMSmoothScroll,CSSOffsetPositionAnchor,CSSBackdropFilter,CSSEnvironmentVariables,CSSFocusVisible,CSSFontSizeAdjust,CSSFragmentIdentifiers,CSSHexAlphaColor,CSSInBodyDoesNotBlockPaint,CSSIndependentTransformProperties,CSSLayoutAPI,CSSLogical,CSSMaskSourceType,CSSMatches,CSSOffsetPathRay,CSSOffsetPathRayContain"
     }
 });
-let currentEmoji = 1700;
-
-console.log(allItems.length);
-
-async function addToGuild(msg, guild) {
-    const thisle = allItems.length - currentEmoji;
-    for (let i = 0; i < 48; i++) {
-        const ID = getID(allItems[currentEmoji]);
-        let name = names[ID].replace(new RegExp(/ /, 'g'), '_');
-        name = name.replace('????', 'qsmark');
-        let fixedName = name.replace(/[()'.]/g, '');
-        fixedName = fixedName.replace(/[-]/g, '_');
-        guild.createEmoji(`./Emojis/${name}.png`, fixedName)
-            .then(() => {
-                console.log(`done ${name}`);
-                if (i === 49) msg.channel.send('done');
-            })
-            .catch((e) => {
-                console.log(`${name} caused this`)
-                throw e;
-            })
-        currentEmoji++;
-    }
-}
-
 bot.on('ready', () => {
     const time = Date().split(" ").slice(4, 5) + " " + Date().split(" ").slice(1, 4).join("/");
     console.log(`Connected at ${time}`)
@@ -55,12 +27,38 @@ bot.on('message', async (msg) => {
         const emoji = bot.emojis.find('name', msg.content.split(" ").pop());
         msg.channel.send(`<:${emoji.name}:${emoji.id}>`);
     }
-    if (msg.content === 'I am loloollooo') {
-        msg.channel.send(`Running...`);
-        const name = "wand of the bulwark";
-        const urlName = name.split(" ").join("-");
+    if (msg.content === 'res') {
+        msg.channel.send('Restarting');
+        process.exit(1);
+    }
+    if (msg.content === 'tester') {
+        const url = 'https://www.realmeye.com/player/EvenReason';
+        nightmare
+            .goto(url)
+            .evaluate(() => {
+                const chars = document.querySelector('#f tbody')
+                //const allChars = 
 
-        const HTMLParser = require('fast-html-parser');
+                return chars;
+            })
+            .end()
+            .then((chars) => {
+                chars.forEach((char, a) => {
+                    fs.writeFile(`./chars${a}.txt`, util.inspect(char, true, null), (err) => {
+                        if (err) throw err;
+                    })
+                    const asd = HTMLParser.parse(char)
+                    fs.writeFile(`./parsed${a}.txt`, util.inspect(asd, true, null), (err) => {
+                        if (err) throw err;
+                    })
+                })
+            })
+            .catch(console.error);
+        msg.channel.send('done');
+    }
+    if (msg.content === 'I am loloollooo') {
+        const name = "conducting wand";
+        const urlName = name.split(" ").join("-");
 
         nightmare
             .goto(`https://www.realmeye.com/wiki/${urlName}`)
@@ -116,18 +114,13 @@ bot.on('message', async (msg) => {
                 for (let i = 0; i < dropsFrom.length; i += 3) {
                     dropArray.push(dropsFrom[i].childNodes[0].rawText)
                 }
-                let msgg = "";
-                msgg += bagtype + "\n";
                 console.log(bagtype)
-                msgg += dropArray + "\n";
                 console.log(dropArray)
 
                 const name = result.name;
                 const description = result.description;
 
                 console.log(name);
-                msgg += name + "\n";
-                msgg += description + "\n";
                 console.log(description);
 
                 let Soulbound = false;
@@ -137,7 +130,6 @@ bot.on('message', async (msg) => {
                     const title = rowInfo.childNodes[0].childNodes[0].rawText;
                     if (title === 'Soulbound') {
                         console.log(title);
-                        msgg += title + "\n";
                         Soulbound = true;
                     } else {
                         const basevalue = rowInfo.childNodes[2];
@@ -153,7 +145,6 @@ bot.on('message', async (msg) => {
                                 value = basevalue.childNodes[1].rawText.slice(1, basevalue.childNodes[1].rawText.length)
                             }
                         }
-                        msgg += `${title}:${value}\n`;
                         console.log(`${title}:${value}`);
                     }
                 }
@@ -166,16 +157,120 @@ bot.on('message', async (msg) => {
                 if (reskins) {
                     console.log(`Item Reskins:`);
                     reskins.forEach((reskin) => {
-                        msgg += `${reskin}\n`;
                         console.log(reskin);
                     })
                 }
-                msg.channel.send(msgg)
+
+                msg.channel.send('done');
             })
             .catch(function (e) {
                 console.log(e);
             });
 
+    }
+    if (msg.content.startsWith('I am a god')) {
+        const namer = "conducting wand";
+        const urlName = namer.split(" ").join("-");
+
+        fetch(`https://www.realmeye.com/wiki/${urlName}`)
+            .then((res) => res.text())
+            .then((document) => {
+                const infoa = document.querySelectorAll('#d .table-responsive');
+                const rows = {};
+
+                const itemname = document.querySelector('h1');
+
+                rows.name = itemname.innerHTML;
+                rows.info = [];
+                rows.drops = [];
+
+                rows.description = infoa[0].querySelector('tr').querySelectorAll('td')[1].innerHTML;
+
+                const title = infoa[1].querySelector('tr');
+
+                if (title.innerText.startsWith('Reskin')) {
+                    rows.reskins = [];
+                    const reskins = title.querySelector('td').innerText.split(", ");
+                    reskins.forEach((reskin) => {
+                        rows.reskins.push(reskin);
+                    })
+                    infoa[2].querySelectorAll('tr').forEach((row) => {
+                        rows.info.push(row.innerHTML);
+                    })
+
+                    infoa[3].querySelectorAll('tr').forEach((row) => {
+                        rows.drops.push(row.innerHTML);
+                    })
+                } else {
+                    infoa[1].querySelectorAll('tr').forEach((row) => {
+                        rows.info.push(row.innerHTML);
+                    })
+
+                    infoa[2].querySelectorAll('tr').forEach((row) => {
+                        rows.drops.push(row.innerHTML);
+                    })
+                }
+
+                const info = rows.info;
+                const reskins = rows.reskins;
+
+                let dropArray = [];
+
+                const bagInfo = HTMLParser.parse(rows.drops[0]);
+                const bagAttrs = bagInfo.childNodes[2].childNodes[0].rawAttrs;
+                const bagtype = bagAttrs.split("Assigned to ").pop().split('"').shift();
+                const dropsFrom = HTMLParser.parse(rows.drops[1]).childNodes[2].childNodes;
+                for (let i = 0; i < dropsFrom.length; i += 3) {
+                    dropArray.push(dropsFrom[i].childNodes[0].rawText)
+                }
+                console.log(bagtype)
+                console.log(dropArray)
+
+                const name = rows.name;
+                const description = rows.description;
+
+                console.log(name);
+                console.log(description);
+
+                let Soulbound = false;
+
+                for (let i = 0; i < info.length; i++) {
+                    const rowInfo = HTMLParser.parse(info[i]);
+                    const title = rowInfo.childNodes[0].childNodes[0].rawText;
+                    if (title === 'Soulbound') {
+                        console.log(title);
+                        Soulbound = true;
+                    } else {
+                        const basevalue = rowInfo.childNodes[2];
+                        let value = basevalue.childNodes[0].rawText; // This does errors for some cases.
+                        if (!value) {
+                            if (basevalue.childNodes.length > 2) {
+                                value += '\n';
+                                for (let j = 1; j < basevalue.childNodes.length; j += 4) {
+                                    const effect = basevalue.childNodes[j].rawText;
+                                    value += `${effect.slice(1, effect.length)}\n`;
+                                }
+                            } else {
+                                value = basevalue.childNodes[1].rawText.slice(1, basevalue.childNodes[1].rawText.length)
+                            }
+                        }
+                        console.log(`${title}:${value}`);
+                    }
+                }
+
+                if (!Soulbound) console.log(`Tradeable`);
+                console.log();
+
+
+
+                if (reskins) {
+                    console.log(`Item Reskins:`);
+                    reskins.forEach((reskin) => {
+                        console.log(reskin);
+                    })
+                }
+            })
+        msg.channel.send('done');
     }
     if (msg.content.startsWith('give')) {
         msg.guild.createRole({
@@ -200,6 +295,5 @@ bot.on('message', async (msg) => {
         })
     }
 })
-
 
 bot.login('NDU5Njg4ODYxMTY1OTQ0ODQz.Di-T9Q.d0DrLwQLvN0Ws2KOqyKk6xe0yPk');
