@@ -15,7 +15,7 @@ const nightmare = Nightmare({
     webPreferences: {
         images: false,
         javascript: false,
-        disableBlinkFeatures: "CSS3Text","CSSAdditiveAnimations","CSSOMSmoothScroll","CSSOffsetPositionAnchor","CSSBackdropFilter","CSSEnvironmentVariables","CSSFocusVisible","CSSFontSizeAdjust","CSSFragmentIdentifiers""CSSHexAlphaColor","CSSInBodyDoesNotBlockPaint","CSSIndependentTransformProperties","CSSLayoutAPI","CSSLogical","CSSMaskSourceType","CSSMatches","CSSOffsetPathRay","CSSOffsetPathRayContain"
+        disableBlinkFeatures: "CSS3Text","CSSAdditiveAnimations","CSSOMSmoothScroll","CSSOffsetPositionAnchor","CSSBackdropFilter","CSSEnvironmentVariables","CSSFocusVisible","CSSFontSizeAdjust","CSSFragmentIdentifiers","CSSHexAlphaColor","CSSInBodyDoesNotBlockPaint","CSSIndependentTransformProperties","CSSLayoutAPI","CSSLogical","CSSMaskSourceType","CSSMatches","CSSOffsetPathRay","CSSOffsetPathRayContain"
     },
     show: false,
     frame: false
