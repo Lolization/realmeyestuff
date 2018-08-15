@@ -58,6 +58,7 @@ bot.on('message', async (msg) => {
     }
     if (msg.content === 'as') {
         msg.channel.send('Running');
+        console.log('aw');
         const name = "conducting wand";
         const urlName = name.split(" ").join("-");
 
@@ -115,6 +116,10 @@ bot.on('message', async (msg) => {
                 for (let i = 0; i < dropsFrom.length; i += 3) {
                     dropArray.push(dropsFrom[i].childNodes[0].rawText)
                 }
+                msg.channel.send(bagtype);
+                dropArray.forEach((enemy) => {
+                    msg.channel.send(enemy);
+                })
                 console.log(bagtype)
                 console.log(dropArray)
 
@@ -122,7 +127,9 @@ bot.on('message', async (msg) => {
                 const description = result.description;
 
                 console.log(name);
+                msg.channel.send(name);
                 console.log(description);
+                msg.channel.send(description);
 
                 let Soulbound = false;
 
