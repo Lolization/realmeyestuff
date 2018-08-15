@@ -304,4 +304,3 @@ bot.on('message', async (msg) => {
     }
 })
 
-bot.login('NDU5Njg4ODYxMTY1OTQ0ODQz.Di-T9Q.d0DrLwQLvN0Ws2KOqyKk6xe0yPk');
