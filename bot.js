@@ -10,7 +10,6 @@ const HTMLParser = require('fast-html-parser');
 const moment = require('moment');
 let test = JSON.parse('{}');
 const talkedRecently = new Set();
-const gscraper = require('graveyard-scrape');
 
 bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}`);
