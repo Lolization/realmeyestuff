@@ -1978,4 +1978,4 @@ bot.on('message', async msg => { // START MESSAGE HANDLER
         }, 2000);
     }
 }) // end message handler
-bot.login('NDgwMDI1MzM4NDIwOTIwMzMw.DlhyBw.-cY9GGOmt-hdiA7exetJ8Dr4w_8')
+bot.login(process.env.BOT_TOKEN)
